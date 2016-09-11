@@ -2,15 +2,15 @@
 #these functions are defined in the FantasyFootballForecasts.R file
 
 CombinedForecasts<-function(x,y){
-  espn<-FantasyFootball2015::ESPN(x,y)
-  FS<-FantasyFootball2015::FantasyShark()
-  #FP<-FantasyFootball2015::FantasyPros()
-  FT<-FantasyFootball2015::FFToday(x,y)
-  CBS<-FantasyFootball2015::CBS(x,y)
-  YH<-FantasyFootball2015::Yahoo(x,y)
-  NFL<-FantasyFootball2015::NFL.com(x,y)
-  FFPC<-FantasyFootball2015::FFPC(x,y)
-  NFFC<-FantasyFootball2015::NFFC(x,y)
+  espn<-FantasySportsDS::ESPN(x,y)
+  FS<-FantasySportsDS::FantasyShark(x)
+  #FP<-FantasySportsDS::FantasyPros()
+  FT<-FantasySportsDS::FFToday(x,y)
+  CBS<-FantasySportsDS::CBS(x,y)
+  YH<-FantasySportsDS::Yahoo(x,y)
+  NFL<-FantasySportsDS::NFL.com(x,y)
+  FFPC<-FantasySportsDS::FFPC(x,y)
+  NFFC<-FantasySportsDS::NFFC(x,y)
 
   combined<-espn
   colnames(combined)<-c("DescriptiveName","ESPN_f")
