@@ -2,47 +2,12 @@
 #these functions are from the 2016 - 2017 NFL season
 #############none of these HTML functions are ready yet!!!!###############
 
-#Download fantasy football projections from FantasyPros.com
-#this site currently uses an https protocol and the XML packagee does not work!
-#FantasyPros<-function(){
-#qb_fp <- XML::readHTMLTable("http://www.fantasypros.com/nfl/projections/qb.php", stringsAsFactors = FALSE)$data
-#rb_fp <- XML::readHTMLTable("http://www.fantasypros.com/nfl/projections/rb.php", stringsAsFactors = FALSE)$data
-#wr_fp <- XML::readHTMLTable("http://www.fantasypros.com/nfl/projections/wr.php", stringsAsFactors = FALSE)$data
-#te_fp <- XML::readHTMLTable("http://www.fantasypros.com/nfl/projections/te.php", stringsAsFactors = FALSE)$data
-#for(i in 2:length(qb_fp)){
-#  qb_fp[,i]<-as.numeric(qb_fp[,i])
-#}
-#qb_fp$FPTS2<-qb_fp[,4]/25+qb_fp[,5]*4-qb_fp[,6]+qb_fp[,8]/10+qb_fp[,9]*6-qb_fp[,10]
-
-#for(i in 2:length(rb_fp)){
-#  rb_fp[,i]<-as.numeric(rb_fp[,i])
-#}
-#rb_fp$FPTS2<-rb_fp[,3]/10+rb_fp[,4]*6+rb_fp[,6]/10+rb_fp[,7]*6-rb_fp[,8]
-#Combine all positions into one data frame
-#qb<-subset(qb_fp, select=c("Player", "FPTS"))
-#qb$DescriptiveName<-paste(qb$Player, " QB",sep="")
-#qb$Position<-"QB"
-#rb<-subset(rb_fp, select=c("Player", "FPTS"))
-#rb$DescriptiveName<-paste(rb$Player, " RB",sep="")
-#rb$Position<-"RB"
-#wr<-subset(wr_fp, select=c("Player", "FPTS"))
-#wr$DescriptiveName<-paste(wr$Player, " WR",sep="")
-#wr$Position<-"WR"
-#te<-subset(te_fp, select=c("Player", "FPTS"))
-#te$DescriptiveName<-paste(te$Player, " TE",sep="")
-#te$Position<-"TE"
-#FP<-rbind(qb,rb,wr,te)
-#FP<-subset(FP,select=c("DescriptiveName","FPTS"))
-
-#}
-
-
 #Download fantasy football projections from espn
 ESPN<-function(x,y){
 espn<-data.frame()
 #only returns 40 results at a time need a loop to collect all by changing startIndex
 for (i in seq(0, 560, 40)){
-  url<-paste0("http://games.espn.go.com/ffl/tools/projections?&startIndex=",i,"&scoringPeriodId=",x,"&seasonId=",y)
+  url<-paste0("http://games.espn.com/lm/tools/projections?&scoringPeriodId=",x,"&seasonId=",y,"&startIndex=",i)
   hold<-XML::readHTMLTable(url,stringsAsFactors = FALSE,header=TRUE)$playertable_0
   colnames(hold)<-hold[1,]
   hold<-hold[2:41,]
@@ -74,7 +39,7 @@ fantasyshark$Position<-as.character(fantasyshark$Pos)
 fantasyshark$Position[fantasyshark$Position == "D"]<-"DST"
 
 for(i in 1:length(fantasyshark[,1])){
-  temp<-stringr::str_split(fantasyshark$Name[i],", ")[[1]]
+  temp<-stringr::str_split(fantasyshark$Player[i],", ")[[1]]
   fantasyshark$First[i]<-temp[2]
   fantasyshark$Last[i]<-temp[1]
 }
@@ -87,7 +52,7 @@ for(i in 1:length(fantasyshark[,1])){
   fantasyshark$DescriptiveName[i]<-paste(fantasyshark$Last[i], " ",fantasyshark$Position[i],sep="")
 }
 
-FS<-subset(fantasyshark,select=c("DescriptiveName","Fantasy.Points"))
+FS<-subset(fantasyshark,select=c("DescriptiveName","Pts"))
 colnames(FS)<-c("DescriptiveName","FPTS")
 
 FS
@@ -220,6 +185,40 @@ NFFC<-function(x,y){
   FT<-rbind(q,r,w,t)
   FT
 }
+
+#Download fantasy football projections from FantasyPros.com
+#this site currently uses an https protocol and the XML packagee does not work!
+#FantasyPros<-function(){
+#qb_fp <- XML::readHTMLTable("http://www.fantasypros.com/nfl/projections/qb.php", stringsAsFactors = FALSE)$data
+#rb_fp <- XML::readHTMLTable("http://www.fantasypros.com/nfl/projections/rb.php", stringsAsFactors = FALSE)$data
+#wr_fp <- XML::readHTMLTable("http://www.fantasypros.com/nfl/projections/wr.php", stringsAsFactors = FALSE)$data
+#te_fp <- XML::readHTMLTable("http://www.fantasypros.com/nfl/projections/te.php", stringsAsFactors = FALSE)$data
+#for(i in 2:length(qb_fp)){
+#  qb_fp[,i]<-as.numeric(qb_fp[,i])
+#}
+#qb_fp$FPTS2<-qb_fp[,4]/25+qb_fp[,5]*4-qb_fp[,6]+qb_fp[,8]/10+qb_fp[,9]*6-qb_fp[,10]
+
+#for(i in 2:length(rb_fp)){
+#  rb_fp[,i]<-as.numeric(rb_fp[,i])
+#}
+#rb_fp$FPTS2<-rb_fp[,3]/10+rb_fp[,4]*6+rb_fp[,6]/10+rb_fp[,7]*6-rb_fp[,8]
+#Combine all positions into one data frame
+#qb<-subset(qb_fp, select=c("Player", "FPTS"))
+#qb$DescriptiveName<-paste(qb$Player, " QB",sep="")
+#qb$Position<-"QB"
+#rb<-subset(rb_fp, select=c("Player", "FPTS"))
+#rb$DescriptiveName<-paste(rb$Player, " RB",sep="")
+#rb$Position<-"RB"
+#wr<-subset(wr_fp, select=c("Player", "FPTS"))
+#wr$DescriptiveName<-paste(wr$Player, " WR",sep="")
+#wr$Position<-"WR"
+#te<-subset(te_fp, select=c("Player", "FPTS"))
+#te$DescriptiveName<-paste(te$Player, " TE",sep="")
+#te$Position<-"TE"
+#FP<-rbind(qb,rb,wr,te)
+#FP<-subset(FP,select=c("DescriptiveName","FPTS"))
+
+#}
 
 
 

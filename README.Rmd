@@ -13,7 +13,7 @@ install_github('isaacfab/FantasySportsDS')
 library(FantasySportsDS)
 ```
 
-For starters, you need to read in the data from you league, I use Draft Kings NFL as the first application for this package.  For now the package is limited to functions for the NFL and the 2016 season.  This .csv file is provided by the Draft Kings site when you build a line up.  We want to create a descriptive name for each player in order to join each row with other information later.  Here we also create a variable (binary only 1 or 0) that if set to 1 requires that player to be in a given lineup.
+For starters, you will need to read in the data from your league, Draft Kings - NFL is used as the first application.  For now the package is limited to functions for the Draft Kings - NFL and the 2016 season.  A '.csv' file is provided by the Draft Kings site when you build a line up.  We want to create a descriptive name for each player in order to join each row with other information later.  Here we also create a variable (binary only 1 or 0) that if set to 1 requires that player to be in a given lineup.
 
 ```{r}
 data<-read.csv("DKSalaries.csv",header=TRUE,strip.white=TRUE)
