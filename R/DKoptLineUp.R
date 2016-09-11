@@ -14,7 +14,7 @@ f.obj<-x[[y]]
 
 #constraints matrix
 #salary amounts (draft king orign) total can be upto $50,000
-salary <- as.vector(x$Salary)
+x$Salary <- as.numeric(x$Salary)
 req<-as.vector(x$Require)
 tot<-sum(req)
 #length value for convenience
