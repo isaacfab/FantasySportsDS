@@ -9,8 +9,8 @@ This package provides a set of functions to create optimal line-ups for use in 1
 ```{r}
 library(devtools)
 library(stringdist)
-install_github('FantasyFootball2015', 'isaacfab')
-library(FantasyFootball2015)
+install_github('FantasyFootballDS', 'isaacfab')
+library(FantasyFootballDS)
 ```
 
 For starters, you need to read in the salaries from Draft Kings.  You can bring in any competition as long as it is for the NFL and the 2015 season.  This .csv file is provided by the site when you build a line up.  We want to create a descriptive name for each player in order to join each row with other information later.  Here we also create a variable (binary only 1 or 0) that if set to 1 requires that player to be in a given lineup.
