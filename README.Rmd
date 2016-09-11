@@ -9,6 +9,7 @@ This package provides a set of functions to create optimal line-ups for use in f
 ```{r}
 library(devtools)
 library(stringdist)
+library(ICSNP)
 install_github('isaacfab/FantasySportsDS')
 library(FantasySportsDS)
 ```
