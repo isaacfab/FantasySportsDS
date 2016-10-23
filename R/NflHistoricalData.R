@@ -15,7 +15,7 @@ historyESPN<-function(x,y){
   }
   hist$week<-x
   hist$year<-y
-
+  return(hist)
 }
 
 historyNFL<-function(x,y,type="REG"){
@@ -46,5 +46,7 @@ historyNFL<-function(x,y,type="REG"){
     hold<-merge(hold,kicker,by=c("Name","Team","Opp","Score"),all=TRUE)
     hold[is.na(hold)]<-0
     hold$Away_Game<-grepl("@",hold$Opp)
-    hold
+    hold$week<-x
+    hold$year<-y
+    return(hold)
 }#close function
