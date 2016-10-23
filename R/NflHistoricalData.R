@@ -15,10 +15,23 @@ historyESPN<-function(x,y){
   }
   hist$week<-x
   hist$year<-y
+
+  #some data cleaning
+  hist$Player<-gsub("\\*","",hist$Player)
+  hist$Player<-gsub(",","",hist$Player)
+  hist$Player<-gsub("\\s\\sP","",hist$Player)
+  hist$Player<-gsub("\\s\\sIR","",hist$Player)
+  hist$Player<-gsub("\\s\\sO","",hist$Player)
+  hist$Player<-gsub("\\s\\sSSPD","",hist$Player)
+  hist$Player<-gsub("\\s\\sD","",hist$Player)
+  hist$Player<-gsub("\\s\\sQ","",hist$Player)
+  hist$Player<-gsub("D/ST\\sD/ST","DST",hist$Player)
   return(hist)
 }
 
-historyNFL<-function(x,y,type="REG"){
+#function returns historical results by position many players have points in several different position in a single game
+#this function will return multiple rows per player if they have stats in different positions (like RB and WR)
+historyNFL.pos<-function(x,y,type="REG"){
   nfl_cat<-c("Passing","Rushing","Receiving","Placekick")
   nfl_cat_table<-c("passer","rusher","receiver","kicker")
   for(i in 1:length(nfl_cat)){
@@ -54,4 +67,37 @@ historyNFL<-function(x,y,type="REG"){
     hold$week<-x
     hold$year<-y
     return(hold)
+}#close function
+
+historyNFL.total<-function(x,y,type="REG"){
+  nfl_cat<-c("Passing","Rushing","Receiving","Placekick")
+  nfl_cat_table<-c("passer","rusher","receiver","kicker")
+  for(i in 1:length(nfl_cat)){
+    url<-paste("http://www.nfl.com/stats/weeklyleaders?week=",x,"&season=",y,"&type=",type,"&showCategory=",nfl_cat[i],sep="")
+    assign(paste(nfl_cat_table[i],sep=""),XML::readHTMLTable(url,stringsAsFactors = FALSE,strip.white=TRUE,header=TRUE)[[nfl_cat_table[i]]])
+  }#close for loop
+  colnames(passer)<-c("Name","Team","Opp","Score","Pass_Comp","Pass_Att","Pass_Yds","Pass_TD","Int","Sack","Pass_Fumb","Pass_Rate")
+  colnames(rusher)<-c("Name","Team","Opp","Score","Rush_Att","Rush_Yds","Rush_Avg","Rush_TD","Rush_Fumb")
+  colnames(receiver)<-c("Name","Team","Opp","Score","Rec","Rec_Yds","Rec_Avg","Rec_TD","Rec_Fumb")
+  colnames(kicker)<-c("Name","Team","Opp","Score","FG_Made","FG_Att","Xpt_Made","Xpt_Att","Kick_Pts")
+
+  #merge the four values into one dataframe
+  passer$Opp<-gsub("[\r\t\n]", "", passer$Opp)
+  rusher$Opp<-gsub("[\r\t\n]", "", rusher$Opp)
+  receiver$Opp<-gsub("[\r\t\n]", "", receiver$Opp)
+  kicker$Opp<-gsub("[\r\t\n]", "", kicker$Opp)
+
+  passer$Score<-gsub("[\r\t\n]", "", passer$Score)
+  rusher$Score<-gsub("[\r\t\n]", "", rusher$Score)
+  receiver$Score<-gsub("[\r\t\n]", "", receiver$Score)
+  kicker$Score<-gsub("[\r\t\n]", "", kicker$Score)
+
+  hold<-merge(passer,receiver,by=c("Name","Team","Opp","Score"),all=TRUE)
+  hold<-merge(hold,rusher,by=c("Name","Team","Opp","Score"),all=TRUE)
+  hold<-merge(hold,kicker,by=c("Name","Team","Opp","Score"),all=TRUE)
+  hold[is.na(hold)]<-0
+  hold$Away_Game<-grepl("@",hold$Opp)
+  hold$week<-x
+  hold$year<-y
+  return(hold)
 }#close function
