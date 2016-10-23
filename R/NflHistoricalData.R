@@ -41,9 +41,14 @@ historyNFL<-function(x,y,type="REG"){
     receiver$Score<-gsub("[\r\t\n]", "", receiver$Score)
     kicker$Score<-gsub("[\r\t\n]", "", kicker$Score)
 
-    hold<-merge(passer,receiver,by=c("Name","Team","Opp","Score"),all=TRUE)
-    hold<-merge(hold,rusher,by=c("Name","Team","Opp","Score"),all=TRUE)
-    hold<-merge(hold,kicker,by=c("Name","Team","Opp","Score"),all=TRUE)
+    passer$Position<-'QB'
+    rusher$Position<-'RB'
+    receiver$Position<-'WR_TE'
+    kicker$Position<-'K'
+
+    hold<-merge(passer,receiver,by=c("Name","Team","Opp","Score","Position"),all=TRUE)
+    hold<-merge(hold,rusher,by=c("Name","Team","Opp","Score","Position"),all=TRUE)
+    hold<-merge(hold,kicker,by=c("Name","Team","Opp","Score","Position"),all=TRUE)
     hold[is.na(hold)]<-0
     hold$Away_Game<-grepl("@",hold$Opp)
     hold$week<-x
