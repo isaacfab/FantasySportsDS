@@ -83,7 +83,12 @@ CombinedForecasts<-function(x,y){
     }
   }
 
+for(i in 2:length(combined)){
+  combined[,i]<-as.numeric(combined[,i])
+}
+
 combined[is.na(combined)]<-0
+
 #calculate robust average
   for(i in 1:length(espn[,1])){
     h<-as.numeric(combined[i,2:(length(combined)-3)])
