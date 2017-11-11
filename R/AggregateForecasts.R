@@ -87,6 +87,7 @@ for(i in 2:length(combined)){
   combined[,i]<-as.numeric(combined[,i])
 }
 
+
 combined[is.na(combined)]<-0
 
 #calculate robust average
