@@ -63,13 +63,7 @@ FFTdataMunge<-function(q, pos){
   colnames(q)<-q[1,]
   q<-q[2:length(q[,1]),2:length(q)]
   colnames(q)[1]<-"player"
-  p.names<-stringr::str_split(q[,1],"Â")
 
-  for(i in 1:length(q[,1])){
-    p.name<-p.names[[i]]
-    p.name<-stringr::str_trim(p.name[2:length(p.name)])
-    q$player[i]<-p.name
-  }
   q$DescriptiveName<-paste(q$player, " ", q$Team, " ",pos,sep="")
   q<-subset(q,select=c("DescriptiveName","FFPts"))
   colnames(q)<-c("DescriptiveName","FPTS")
